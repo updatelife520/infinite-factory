@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # universal_factory.py —— 换赛道只改 fetch_mine()
 import os, random, requests, itertools, time, multiprocessing as mp
+import os, requests, json
 
 ###############################################################################
 # 1) 只改这里：换赛道 → 换矿场函数
