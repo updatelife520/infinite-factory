@@ -47,6 +47,41 @@ def worker(sku_func, queue):
         print("[交付完成]", sku_func.__name__, len(out))
         # TODO: 调用 Gumroad API 上架
         # TODO: 调用 Twitter API 发帖
+def gumroad_create(sku_text: str, price: int = 9, title_prefix: str = "Auto-SKU"):
+    """
+    调用 Gumroad API 创建数字商品
+    返回永久销售链接
+    """
+    token = os.getenv("GUMROAD_TOKEN")
+    if not token:
+        print("[Gumroad] 未配置 GUMROAD_TOKEN，跳过上架")
+        return None
+
+    title = f"{title_prefix} · {int(time.time())}"   # 唯一标题
+    payload = {
+        "access_token": token,
+        "name": title,
+        "price": price,                     # 美元分单位
+        "currency": "usd",
+        "description": "Auto-generated digital asset.\n\n" + sku_text[:200],
+        "file_attachment": ("content.txt", sku_text.encode(), "text/plain")
+    }
+
+    try:
+        resp = requests.post(
+            "https://api.gumroad.com/v2/products",
+            files={"file_attachment": payload.pop("file_attachment")},
+            data=payload,
+            timeout=15
+        )
+        resp.raise_for_status()
+        permalink = resp.json()["product"]["permalink"]
+        print(f"[Gumroad] 上架成功 → https://gumroad.com/l/{permalink}")
+        return permalink
+    except Exception as e:
+        print("[Gumroad] 上架失败", e)
+        return None
+
 
 def infinite_feed():
     for _ in itertools.count():
