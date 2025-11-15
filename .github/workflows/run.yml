@@ -1,9 +1,9 @@
-name: Infinite-Factory
+name: factory
 
 on:
+  workflow_dispatch:   # 手动按钮
   schedule:
     - cron: '0 */2 * * *'   # 每 2 小时
-  workflow_dispatch:        # 手动按钮
 
 jobs:
   build:
@@ -15,6 +15,3 @@ jobs:
           python-version: '3.11'
       - run: pip install requests matplotlib
       - run: python universal_factory.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GUMROAD_TOKEN: ${{ secrets.GUMROAD_TOKEN }}
