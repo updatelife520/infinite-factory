@@ -16,5 +16,5 @@ jobs:
       - run: pip install requests matplotlib
       - run: python universal_factory.py
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        # 自带
-          GUMROAD_TOKEN: ${{ secrets.GUMROAD_TOKEN }}      # 下一步再填
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GUMROAD_TOKEN: ${{ secrets.GUMROAD_TOKEN }}
