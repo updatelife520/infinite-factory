@@ -1,0 +1,20 @@
+name: Infinite-Factory
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'   # 每 2 小时
+  workflow_dispatch:        # 手动按钮
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: pip install requests matplotlib
+      - run: python universal_factory.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        # 自带
+          GUMROAD_TOKEN: ${{ secrets.GUMROAD_TOKEN }}      # 下一步再填
